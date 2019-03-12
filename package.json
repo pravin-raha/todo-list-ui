@@ -1,10 +1,10 @@
 {
-    "private": true,
-    "scripts": {
-      "build": "pulp build --to dist/index.js"
-    },
-    "devDependencies": {
-      "pulp": "^12.3.0",
-      "purescript": "^0.12.0"
-    }
+  "private": true,
+  "scripts": {
+    "build": "pulp build --to dist/index.js"
+  },
+  "devDependencies": {
+    "pulp": "^12.3.0",
+    "purescript": "^0.12.0"
   }
+}
