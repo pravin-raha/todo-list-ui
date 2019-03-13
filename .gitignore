@@ -7,3 +7,6 @@
 /.psc*
 /.purs*
 /.psa*
+/.idea
+package-lock.json
+yarn.lock

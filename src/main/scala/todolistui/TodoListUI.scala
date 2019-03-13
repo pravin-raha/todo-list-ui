@@ -5,6 +5,8 @@ import monix.execution.Scheduler.Implicits.global
 import outwatch.dom._
 import cats.implicits._
 import outwatch.dom.dsl._
+import monix.reactive._
+import monix.reactive.Observable
 
 object TodoListUI {
 
@@ -13,11 +15,11 @@ object TodoListUI {
     deleteEvents <- Handler.create[String]()
     additions <- IO(addEvents.map(addToList))
     deletions <- IO(deleteEvents.map(removeFromList))
-    state = (additions ++ deletions)
+    state = Observable.merge(additions, deletions)
       .scan(List.empty[String])((list, fn) => fn.apply(list))
-    listViewsF = state
+    listViews = state
       .map(_.map(todo => todoComponent(todo, deleteEvents)).sequence)
-    listViews <- IO(listViewsF.map(f => f.unsafeRunSync))
+      .map(f => f.unsafeRunSync)
     textFieldCom <- textFieldComponent(addEvents)
     todoDiv <- IO(
       div(
@@ -26,7 +28,6 @@ object TodoListUI {
       )
     )
   } yield todoDiv
-
 
   def textFieldComponent(outputEvents: Sink[String]): IO[VNode] = {
     for {
