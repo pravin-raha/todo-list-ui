@@ -10,7 +10,7 @@ import monix.reactive.Observable
 
 object TodoListUI {
 
-  val todoPrograme: IO[VNode] = for {
+  val todoProgram: IO[VNode] = for {
     addEvents <- Handler.create[String]()
     deleteEvents <- Handler.create[String]()
     additions <- IO(addEvents.map(addToList))
@@ -19,7 +19,8 @@ object TodoListUI {
       .scan(List.empty[String])((list, fn) => fn.apply(list))
     listViews = state
       .map(_.map(todo => todoComponent(todo, deleteEvents)).sequence)
-      .map(f => f.unsafeRunSync)
+      .map(Observable.fromIO)
+      .flatten
     textFieldCom <- textFieldComponent(addEvents)
     todoDiv <- IO(
       div(
@@ -60,7 +61,7 @@ object TodoListUI {
 
   def main(args: Array[String]): Unit = {
     val app = for {
-      todo <- todoPrograme
+      todo <- todoProgram
       _ <- OutWatch.renderInto("#app", todo)
     } yield ()
 
