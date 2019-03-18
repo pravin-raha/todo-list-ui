@@ -1,11 +1,12 @@
 organization := "com.raha"
 name := "todo-list-ui"
 version := "0.1.0"
+resolvers += "jitpack" at "https://jitpack.io"
 
 scalaVersion := "2.12.6"
 
 libraryDependencies ++= Seq(
-  "io.github.outwatch" %%% "outwatch" % "1.0.0-RC2",
+  "com.github.outwatch" % "outwatch" % "master-SNAPSHOT",
   "org.scalatest" %%% "scalatest" % "3.0.5" % Test
 )
 
